@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use serde_json::Value;
 use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
-use tokio::net::UnixStream;
+use tokio::net::unix::{OwnedReadHalf, OwnedWriteHalf};
 use std::error::Error;
 use termion::{clear, cursor};
 use colored::*;
@@ -16,15 +16,13 @@ struct Container {
     status: String,
 }
 
-#[tokio::main]
-pub async fn connect_to_socket() -> Result<(), Box<dyn Error>> {
-    let stream = UnixStream::connect("/var/run/docker.sock").await?;
-    let (reader, mut writer) = stream.into_split();
+pub async fn read_docker_events(mut reader: BufReader<OwnedReadHalf>, mut writer: OwnedWriteHalf) -> Result<(), Box<dyn Error>> {
     writer.write_all(HTTP_REQUEST.as_bytes()).await?;
 
-    let mut reader = BufReader::new(reader);
     let mut line = String::new();
     let mut containers: HashMap<String, Container> = HashMap::new();
+
+    println!("Starting reading docker events");
 
     while reader.read_line(&mut line).await? > 0 {
         if line.starts_with('{') {
