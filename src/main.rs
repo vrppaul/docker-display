@@ -1,8 +1,10 @@
+pub mod api;
 pub mod client;
 
 use std::error::Error;
 
-use crate::client::{get_stream_tuple, read_docker_events};
+use crate::client::get_stream_tuple;
+use crate::api::events::read_docker_events;
 
 
 #[tokio::main]

@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+// use docker_display::create_api_url;
 use serde_json::Value;
 use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
 use tokio::net::unix::{OwnedReadHalf, OwnedWriteHalf};
@@ -6,6 +7,7 @@ use std::error::Error;
 use termion::{clear, cursor};
 use colored::*;
 
+// static HTTP_REQUEST: &str = create_api_url("/events");
 static HTTP_REQUEST: &str = "GET /events HTTP/1.1\r\nHost: localhost\r\n\r\n";
 
 #[derive(Debug)]
