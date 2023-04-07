@@ -8,7 +8,7 @@ use crate::api::events;
 
 #[tokio::main]
 async fn main() {
-    launch_display().await;
+    launch_display().await.ok();
 }
 
 async fn launch_display() -> Result<(), Box<dyn Error>> {
