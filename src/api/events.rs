@@ -1,9 +1,7 @@
 use std::collections::HashMap;
 use std::error::Error;
 
-use colored::*;
 use serde_json::Value;
-use termion::{clear, cursor};
 use tokio::{
     io::{AsyncBufReadExt, AsyncWriteExt, BufReader},
     net::unix::{OwnedReadHalf, OwnedWriteHalf},
